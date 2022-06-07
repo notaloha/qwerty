@@ -1,0 +1,97 @@
+#include <iostream>
+#include <string> 
+#include <cstdlib> 
+#include <ctime>
+#include <fstream>
+using namespace std;
+
+
+class rules
+{
+public:
+    void coutrules() 
+    {
+        system("cls");
+        cout << "\t\t======Правила======\n";
+        cout << "\t1. Выберите число от 1 до 10\n";
+        cout << "\t2. Победитель получает 10-кратную сумму ставки\n";
+        cout << "\t3. Неправильная ставка, и вы теряете сумму, которую поставили\n\n";
+    }
+
+private:
+
+};
+
+
+
+
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    string playerName;
+    int balance; 
+    int bettingAmount;
+    int guess;
+    int dice; 
+    char choice;
+    ofstream in;
+    in.open("C:\\Users\\danik\\source\\repos\\ConsoleApplication4\\names.txt");
+    in.open("name.txt");
+    srand(time(0)); 
+    cout << "\n\t\t========Добро пожаловать в Казино=======\n\n";
+    cout << "\n\nВведите ваше имя ";
+    getline(cin, playerName);
+    in << playerName;
+    cout << "\n\nВведите ваш стартовый балланс : $";
+    cin >> balance;
+    do
+    {
+        system("cls");
+        rules tst;
+        tst.coutrules();
+        cout << "\n\nВаш нынешний балланс $ " << balance << "\n";
+        
+        do
+        {
+            cout << "И так, " << playerName << ", введите сумму ставки : $";
+            cin >> bettingAmount;
+            if (bettingAmount > balance)
+                cout << "Ставка не может быть выше вашего балланса\n"
+                << "\nПовторно введите баланс\n ";
+        } while (bettingAmount > balance);
+        
+        do
+        {
+            cout << "Угадай любой номер от 1 до 10 :";
+            cin >> guess;
+            if (guess <= 0 || guess > 10)
+                cout << "\nЧисло должно бвть между 1 и 10\n"
+                << "Введите число заново ";
+        } while (guess <= 0 || guess > 10);
+        dice = rand() % 10 + 1;
+        if (dice == guess)
+        {
+            cout << "\n\nОго! Вы выйграли." << bettingAmount * 10;
+            balance = balance + bettingAmount * 10;
+        }
+        else
+        {
+            cout << "Ой! Не повезло, удачи в следующий раз. Вы потеряли $ " << bettingAmount << "\n";
+            balance = balance - bettingAmount;
+        }
+        cout << "\nПравильное число было : " << dice << "\n";
+        cout << "\n" << playerName << ", Ваш балланс равен $ " << balance << "\n";
+        if (balance == 0)
+        {
+            cout << "У вас недостаточно средств ";
+            break;
+        }
+        cout << "\n\n-->Хотите сыграть еще раз (y/n)? ";
+        cin >> choice;
+    } while (choice == 'Y' || choice == 'y');
+    cout << "\n\n\n";
+    cout << "\n\nСпасибо за игру. Ваш баланс равен $ " << balance << "\n\n";
+    return 0;
+}
+
